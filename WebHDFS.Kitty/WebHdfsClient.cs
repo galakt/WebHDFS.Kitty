@@ -119,17 +119,25 @@ namespace WebHDFS.Kitty
             return (await GetRequest<HomeDirectoryResponse>($"/webhdfs/v1/?op=GETHOMEDIRECTORY")).Path;
         }
         
-        public async Task<bool> MakeDirectory(string path)
+        public async Task<bool> MakeDirectory(string path, string permission = null)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=MKDIRS&permission=770");
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=MKDIRS";
+            if (!string.IsNullOrWhiteSpace(permission))
+            {
+                requestUri += "&permission=" + permission;
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=MKDIRS");
             var response = await _httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={content}");
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
             }
-            //TODO: check boolean response!
-            return true;
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            return deserializedContent.Boolean;
         }
 
         public async Task UploadFile(string path, Stream fileStream)

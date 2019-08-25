@@ -21,7 +21,7 @@ namespace WebHDFS.Kitty
 
         Task<string> GetHomeDirectory();
         
-        Task<bool> MakeDirectory(string path);
+        Task<bool> MakeDirectory(string path, string permission);
 
         Task UploadFile(string path, Stream fileStream);
     }
