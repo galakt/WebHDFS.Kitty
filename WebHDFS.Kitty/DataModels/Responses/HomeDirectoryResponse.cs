@@ -1,4 +1,4 @@
-﻿namespace WebHDFS.Kitty.DataModels
+﻿namespace WebHDFS.Kitty.DataModels.Responses
 {
     public sealed class HomeDirectoryResponse
     {

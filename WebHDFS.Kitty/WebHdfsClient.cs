@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WebHDFS.Kitty.DataModels;
+using WebHDFS.Kitty.DataModels.Responses;
 
 namespace WebHDFS.Kitty
 {

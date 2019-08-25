@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using WebHDFS.Kitty.DataModels;
+using WebHDFS.Kitty.DataModels.Responses;
 
 namespace WebHDFS.Kitty
 {
