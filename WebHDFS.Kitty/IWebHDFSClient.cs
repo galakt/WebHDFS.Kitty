@@ -2,13 +2,14 @@
 using System.IO;
 using System.Threading.Tasks;
 using WebHDFS.Kitty.DataModels;
+using WebHDFS.Kitty.DataModels.RequestParams;
 using WebHDFS.Kitty.DataModels.Responses;
 
 namespace WebHDFS.Kitty
 {
     public interface IWebHdfsClient
     {
-        Task<Stream> OpenStream(string path);
+        Task<Stream> OpenStream(string path, OpenParams requestParams);
 
         Task<FileStatus> GetFileStatus(string path);
 

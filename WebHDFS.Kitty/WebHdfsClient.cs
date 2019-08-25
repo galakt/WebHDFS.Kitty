@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using Newtonsoft.Json;
 using WebHDFS.Kitty.DataModels;
+using WebHDFS.Kitty.DataModels.RequestParams;
 using WebHDFS.Kitty.DataModels.Responses;
 
 namespace WebHDFS.Kitty
@@ -23,9 +25,23 @@ namespace WebHDFS.Kitty
             };
         }
 
-        public async Task<Stream> OpenStream(string path)
+        public async Task<Stream> OpenStream(string path, OpenParams requestParams)
         {
-            var initRequest = new HttpRequestMessage(HttpMethod.Get, $"/webhdfs/v1/{path.TrimStart('/')}?op=OPEN");
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=OPEN";
+            if (requestParams.Offset !=null)
+            {
+                requestUri = requestUri + "&offset=" + requestParams.Offset;
+            }
+            if (requestParams.Length != null)
+            {
+                requestUri = requestUri + "&length=" + requestParams.Length;
+            }
+            if (requestParams.BufferSize != null)
+            {
+                requestUri = requestUri + "&buffersize=" + requestParams.BufferSize;
+            }
+
+            var initRequest = new HttpRequestMessage(HttpMethod.Get, requestUri);
             var initResponse = await _httpClient.SendAsync(initRequest, HttpCompletionOption.ResponseHeadersRead);
 
             if (initResponse.StatusCode == HttpStatusCode.TemporaryRedirect)
