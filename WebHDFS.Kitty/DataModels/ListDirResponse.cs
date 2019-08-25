@@ -2,7 +2,7 @@
 
 namespace WebHDFS.Kitty.DataModels
 {
-    public class ListDirResponse
+    public class ListStatusResponse
     {
         [JsonProperty(propertyName: "FileStatuses")]
         public FileStatusCollection FileStatusCollection { get; set; }
