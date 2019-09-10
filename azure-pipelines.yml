@@ -18,7 +18,7 @@ steps:
 - script: 'dotnet --info'
   displayName: 'dotnet info'
 
-- script: 'dotnet build -c ${buildConfiguration}'
+- script: 'dotnet build -c Release'
   displayName: 'build'
 
 - script: 'dotnet test'
