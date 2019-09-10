@@ -18,9 +18,11 @@ steps:
 - script: 'dotnet --info'
   displayName: 'dotnet info'
 
-- script: 'dotnet bulid -c ${buildConfiguration}'
+- script: 'dotnet build -c ${buildConfiguration}'
+  displayName: 'build'
 
 - script: 'dotnet test'
+  displayName: 'test'
 
 - task: DotNetCoreCLI@2
   displayName: 'make pkg'
