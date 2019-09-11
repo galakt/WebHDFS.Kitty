@@ -29,7 +29,11 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/WebHDFS.Kitty.csproj'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop'
 
 
