@@ -3,6 +3,12 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
+# Predefined variables - https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
+# Build and release tasks - https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/index?view=azure-devops#tool
+# csproj format - https://docs.microsoft.com/en-us/dotnet/core/tools/csproj
+# nuget pack - https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets
+
+
 trigger:
 - master
 
