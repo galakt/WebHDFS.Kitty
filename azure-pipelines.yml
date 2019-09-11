@@ -27,13 +27,9 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'make pkg'
   inputs:
-    command: publish
+    command: pack
+    packagesToPack: '**/WebHDFS.Kitty.csproj'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
 
-- task: CopyFiles@2
-  displayName: 'copy nuget'
-  inputs:
-    Contents: '**/*.nupkg'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-    CleanTargetFolder: true
-    OverWrite: true
-    flattenFolders: true
+
