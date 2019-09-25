@@ -127,7 +127,7 @@ namespace WebHDFS.Kitty
                 requestUri += "&permission=" + permission;
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=MKDIRS");
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
             var response = await _httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
