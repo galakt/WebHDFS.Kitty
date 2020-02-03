@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHDFS.Kitty", "WebHDFS.Kitty\WebHDFS.Kitty.csproj", "{90E44E8F-254A-48BA-9387-2F359F6388AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHDFS.Kitty.IntegrationTests", "WebHDFS.Kitty.IntegrationTests\WebHDFS.Kitty.IntegrationTests.csproj", "{ED88D91D-2F8C-40FE-B552-6558E4655E5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHDFS.Kitty.IntegrationTests", "WebHDFS.Kitty.IntegrationTests\WebHDFS.Kitty.IntegrationTests.csproj", "{ED88D91D-2F8C-40FE-B552-6558E4655E5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHDFS.Kitty.XUnitTests", "WebHDFS.Kitty.XUnitTests\WebHDFS.Kitty.XUnitTests.csproj", "{14D67D2E-D412-4515-B130-180BCE987178}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{ED88D91D-2F8C-40FE-B552-6558E4655E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED88D91D-2F8C-40FE-B552-6558E4655E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED88D91D-2F8C-40FE-B552-6558E4655E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14D67D2E-D412-4515-B130-180BCE987178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14D67D2E-D412-4515-B130-180BCE987178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14D67D2E-D412-4515-B130-180BCE987178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14D67D2E-D412-4515-B130-180BCE987178}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
