@@ -4,48 +4,40 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WebHDFS.Kitty.DataModels.RequestParams;
 
 namespace WebHDFS.Kitty.IntegrationTests
 {
-    [TestClass]
     public class Open
     {
         private IWebHdfsClient client;
 
-        [TestInitialize]
-        public void Init()
-        {
-            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-        }
-
-        [Ignore]
-        [TestMethod]
+        [CheckConnStrSetupFact]
         public async Task ReadFileStream()
         {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             var result = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams());
             using (StreamReader r = new StreamReader(result))
             {
                 var c = r.ReadToEnd();
             }
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
-        [Ignore]
-        [TestMethod]
+        [CheckConnStrSetupFact]
         public async Task ReadBigFile()
         {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             var result = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/part.0", new OpenParams());
-
             string firstLine = null;
             using (StreamReader r = new StreamReader(result))
             {
                 firstLine = r.ReadLine();
             }
-
-            Assert.IsNotNull(result);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(firstLine));
+            Assert.NotNull(result);
+            Assert.False(string.IsNullOrWhiteSpace(firstLine));
         }
+
     }
 }

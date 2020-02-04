@@ -1,33 +1,26 @@
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using Xunit;
 
 namespace WebHDFS.Kitty.IntegrationTests
 {
-    [TestClass]
     public class MakeDirectory
     {
         private IWebHdfsClient client;
 
-        [TestInitialize]
-        public void Init()
-        {
-            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-        }
-
-        [Ignore]
-        [TestMethod]
+        [CheckConnStrSetupFact]
         public async Task CreateNewDir()
         {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             var result = await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/MakeDirTest", "770");
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Ignore]
-        [TestMethod]
+        [CheckConnStrSetupFact]
         public async Task CreateNewDir2()
         {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             var result = await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/MakeDirTest", "770");
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
     }
 }
