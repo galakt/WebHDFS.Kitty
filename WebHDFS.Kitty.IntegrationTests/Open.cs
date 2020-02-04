@@ -17,27 +17,62 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task ReadFileStream()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var result = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams());
-            using (StreamReader r = new StreamReader(result))
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams());
+            using (StreamReader reader = new StreamReader(openResponse))
             {
-                var c = r.ReadToEnd();
+                var openResult = reader.ReadToEnd();
             }
-            Assert.NotNull(result);
+            Assert.NotNull(openResponse);
         }
 
         [CheckConnStrSetupFact]
         public async Task ReadBigFile()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var result = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/part.0", new OpenParams());
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/part.0", new OpenParams());
             string firstLine = null;
-            using (StreamReader r = new StreamReader(result))
+            using (StreamReader reader = new StreamReader(openResponse))
             {
-                firstLine = r.ReadLine();
+                firstLine = reader.ReadLine();
             }
-            Assert.NotNull(result);
+            Assert.NotNull(openResponse);
             Assert.False(string.IsNullOrWhiteSpace(firstLine));
         }
 
+        [CheckConnStrSetupFact]
+        public async Task ReadWithLenght()
+        {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Length = 2 });
+            using (StreamReader reader = new StreamReader(openResponse))
+            {
+                var openResult = reader.ReadToEnd();
+                Assert.True("So" == openResult);
+            }
+        }
+
+        [CheckConnStrSetupFact]
+        public async Task ReadWithOffset()
+        {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 2 });
+            using (StreamReader reader = new StreamReader(openResponse))
+            {
+                var openResult = reader.ReadToEnd();
+                Assert.Equal("me text\r\n", openResult);
+            }
+        }
+
+        [CheckConnStrSetupFact]
+        public async Task ReadWithOffsetWithLenght()
+        {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 2, Length = 2 });
+            using (StreamReader reader = new StreamReader(openResponse))
+            {
+                var openResult = reader.ReadToEnd();
+                Assert.Equal("me", openResult);
+            }
+        }
     }
 }
