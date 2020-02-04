@@ -21,8 +21,8 @@ namespace WebHDFS.Kitty.IntegrationTests
             using (StreamReader reader = new StreamReader(openResponse))
             {
                 var openResult = reader.ReadToEnd();
+                Assert.True("Some text\r\n" == openResult);
             }
-            Assert.NotNull(openResponse);
         }
 
         [CheckConnStrSetupFact]
