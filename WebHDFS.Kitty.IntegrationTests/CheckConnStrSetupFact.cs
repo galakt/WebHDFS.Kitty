@@ -9,7 +9,7 @@ namespace WebHDFS.Kitty.IntegrationTests
     {
         public CheckConnStrSetupFact()
         {
-            if (DataTestUtility.HdfsConnStr == null)
+            if (string.IsNullOrWhiteSpace(DataTestUtility.HdfsConnStr))
             {
                 Skip = "DataTestUtility.HdfsConnStr = null!";
             }
