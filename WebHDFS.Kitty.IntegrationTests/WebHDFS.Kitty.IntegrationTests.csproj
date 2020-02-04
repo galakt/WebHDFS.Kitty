@@ -17,4 +17,10 @@
     <ProjectReference Include="..\WebHDFS.Kitty\WebHDFS.Kitty.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Samples\SampleTextFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
