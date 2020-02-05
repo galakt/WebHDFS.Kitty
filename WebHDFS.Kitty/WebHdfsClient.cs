@@ -69,7 +69,7 @@ namespace WebHDFS.Kitty
 
         public async Task<FileStatus> GetFileStatus(string path)
         {
-            return await GetRequest<FileStatus>($"/webhdfs/v1/{path.TrimStart('/')}?op=GETFILESTATUS");
+            return (await GetRequest<FileStatusResponse>($"/webhdfs/v1/{path.TrimStart('/')}?op=GETFILESTATUS")).FileStatus;
         }
 
         public async Task<IReadOnlyCollection<FileStatus>> ListStatus(string path)
@@ -140,9 +140,53 @@ namespace WebHDFS.Kitty
             return deserializedContent.Boolean;
         }
 
-        public async Task UploadFile(string path, Stream fileStream)
+        public async Task Delete(string path, bool Recursive = false)
         {
-            var initRequest = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATE&noredirect=false&overwrite=true&permission=770");
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=DELETE";
+            if (Recursive != false)
+            {
+                requestUri = requestUri + "&recursive=true";
+            }
+            var initRequest = new HttpRequestMessage(HttpMethod.Delete, requestUri);
+
+            initRequest.Content = new StreamContent(Stream.Null);
+            initRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            var initResponse = await _httpClient.SendAsync(initRequest);
+        }
+
+        public async Task UploadFile(string path,
+            Stream fileStream,
+            bool Overwrite = false,
+            int Permission = 755,
+            short? Replication = null,
+            long? BufferSize = null,
+            long? BlockSize = null)
+        {
+            //var initRequest = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATE&noredirect=false&overwrite=true&permission=770");
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATE&noredirect=false";
+            if (Overwrite != false)
+            {
+                requestUri = requestUri + "&overwrite=true";
+            }
+            if (BlockSize != null)
+            {
+                requestUri = requestUri + "&blocksize=" + BlockSize;
+            }
+            if (Replication != null)
+            {
+                requestUri = requestUri + "&replication=" + Replication;
+            }
+            if (Permission != 755)
+            {
+                requestUri = requestUri + "&permission=" + Permission;
+            }
+            if (BufferSize != null)
+            {
+                requestUri = requestUri + "&buffersize=" + BufferSize;
+            }
+
+            var initRequest = new HttpRequestMessage(HttpMethod.Put, requestUri);
+
             initRequest.Content = new StreamContent(Stream.Null);
             initRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             var initResponse = await _httpClient.SendAsync(initRequest);
