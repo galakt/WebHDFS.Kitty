@@ -16,20 +16,23 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task GetStatusOfFile()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample");
-            Assert.True(FileStat.Length == 11);
-            Assert.True(FileStat.Type == "FILE");
-            Assert.True(FileStat.Permission == "770");
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"));
+
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample");
+            Assert.True(fileStat.Length == 11);
+            Assert.True(fileStat.Type == "FILE");
+            Assert.True(fileStat.Permission == "770");
         }
 
         [CheckConnStrSetupFact]
         public async Task GetStatusOfDirectory()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}");
-            Assert.True(FileStat.Length == 0);
-            Assert.True(FileStat.Type == "DIRECTORY");
-            Assert.True(FileStat.Permission == "755");
+
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}");
+            Assert.True(fileStat.Length == 0);
+            Assert.True(fileStat.Type == "DIRECTORY");
+            Assert.True(fileStat.Permission == "755");
         }
     }
 }

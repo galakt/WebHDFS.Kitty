@@ -23,6 +23,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task UploadFileWithOverWrite()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
             var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
             var oldLenght = FileStat.Length;
 
@@ -32,10 +33,16 @@ namespace WebHDFS.Kitty.IntegrationTests
         }
 
         [CheckConnStrSetupFact]
-        public async Task UploadFileWith_No_OverWrite()
+        public async Task UploadFileWithNoOverWrite()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
+            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
+            foreach (var status in listStatus)
+            {
+                if(status.PathSuffix == "sample2" && status.Type == "FILE")
+                await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
+            }
 
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: false);
             var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
@@ -46,10 +53,10 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task UploadFileWithPermission()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Permission: 750);
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Permission: 700);
             var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
             Assert.True(FileStat.Type == "FILE");
-            Assert.True(FileStat.Permission == "750");
+            Assert.True(FileStat.Permission == "700");
         }
 
         [CheckConnStrSetupFact]

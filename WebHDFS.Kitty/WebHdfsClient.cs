@@ -152,6 +152,11 @@ namespace WebHDFS.Kitty
             initRequest.Content = new StreamContent(Stream.Null);
             initRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             var initResponse = await _httpClient.SendAsync(initRequest);
+            if (!initResponse.IsSuccessStatusCode)
+            {
+                var notSuccessResponseContent = await initResponse.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={initResponse.StatusCode}. Content={notSuccessResponseContent}");
+            }
         }
 
         public async Task UploadFile(string path,
@@ -162,7 +167,6 @@ namespace WebHDFS.Kitty
             long? BufferSize = null,
             long? BlockSize = null)
         {
-            //var initRequest = new HttpRequestMessage(HttpMethod.Put, $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATE&noredirect=false&overwrite=true&permission=770");
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATE&noredirect=false";
             if (Overwrite != false)
             {
