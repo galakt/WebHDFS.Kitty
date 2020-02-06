@@ -36,7 +36,6 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task UploadFileWithNoOverWrite()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
             var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
             foreach (var status in listStatus)
             {

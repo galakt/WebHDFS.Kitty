@@ -16,7 +16,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task GetStatusOfFile()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"));
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Permission:770);
 
             var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample");
             Assert.True(fileStat.Length == 11);

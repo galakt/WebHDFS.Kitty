@@ -27,5 +27,19 @@ namespace WebHDFS.Kitty.IntegrationTests
             }
         }
 
+        [CheckConnStrSetupFact]
+        public async Task RemoveNonexistentFile()
+        {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
+
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
+            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
+            foreach (var status in listStatus)
+            {
+                Assert.False(status.PathSuffix == "sample2" && status.Type == "FILE");
+            }
+        }
+
     }
 }
