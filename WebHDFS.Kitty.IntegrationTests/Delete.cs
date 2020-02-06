@@ -17,7 +17,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task Remove()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
 
             await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
             var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
@@ -41,5 +41,18 @@ namespace WebHDFS.Kitty.IntegrationTests
             }
         }
 
+        [CheckConnStrSetupFact]
+        public async Task RemoveDirectory()
+        {
+            client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/DirForDelete/SampleFile", "770");
+
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/DirForDelete",Recursive: true);
+            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
+            foreach (var status in listStatus)
+            {
+                Assert.False(status.PathSuffix == "DirForDelete" && status.Type == "DIRECTORY");
+            }
+        }
     }
 }

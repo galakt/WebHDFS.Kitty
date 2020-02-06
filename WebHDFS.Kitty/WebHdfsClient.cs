@@ -147,6 +147,10 @@ namespace WebHDFS.Kitty
             {
                 requestUri = requestUri + "&recursive=true";
             }
+            else
+            {
+                requestUri = requestUri + "&recursive=false";
+            }
             var initRequest = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 
             initRequest.Content = new StreamContent(Stream.Null);
@@ -172,6 +176,10 @@ namespace WebHDFS.Kitty
             {
                 requestUri = requestUri + "&overwrite=true";
             }
+            else
+            {
+                requestUri = requestUri + "&overwrite=false";
+            }
             if (BlockSize != null)
             {
                 requestUri = requestUri + "&blocksize=" + BlockSize;
@@ -181,6 +189,10 @@ namespace WebHDFS.Kitty
                 requestUri = requestUri + "&replication=" + Replication;
             }
             if (Permission != 755)
+            {
+                requestUri = requestUri + "&permission=" + Permission;
+            }
+            else
             {
                 requestUri = requestUri + "&permission=" + Permission;
             }
