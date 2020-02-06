@@ -14,9 +14,9 @@ namespace WebHDFS.Kitty.IntegrationTests
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            Assert.True(FileStat.Type == "FILE");
-            Assert.True(FileStat.Permission == "755");
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            Assert.True(fileStat.Type == "FILE");
+            Assert.True(fileStat.Permission == "755");
         }
 
         [CheckConnStrSetupFact]
@@ -24,12 +24,12 @@ namespace WebHDFS.Kitty.IntegrationTests
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            var oldLenght = FileStat.Length;
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            var oldLenght = fileStat.Length;
 
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile2.txt"), Overwrite: true);
-            FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            Assert.True(FileStat.Length != oldLenght);
+            fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            Assert.True(fileStat.Length != oldLenght);
         }
 
         [CheckConnStrSetupFact]
@@ -44,8 +44,8 @@ namespace WebHDFS.Kitty.IntegrationTests
             }
 
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: false);
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            Assert.True(FileStat.Length != 0);
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            Assert.True(fileStat.Length != 0);
         }
 
         [CheckConnStrSetupFact]
@@ -53,9 +53,9 @@ namespace WebHDFS.Kitty.IntegrationTests
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Permission: 700);
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            Assert.True(FileStat.Type == "FILE");
-            Assert.True(FileStat.Permission == "700");
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            Assert.True(fileStat.Type == "FILE");
+            Assert.True(fileStat.Permission == "700");
         }
 
         [CheckConnStrSetupFact]
@@ -63,8 +63,8 @@ namespace WebHDFS.Kitty.IntegrationTests
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Replication: 3);
-            var FileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
-            Assert.True(FileStat.Replication == 3);
+            var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
+            Assert.True(fileStat.Replication == 3);
         }
     }
 }

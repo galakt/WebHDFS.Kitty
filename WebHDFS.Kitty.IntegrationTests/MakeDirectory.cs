@@ -25,6 +25,7 @@ namespace WebHDFS.Kitty.IntegrationTests
             {
                 Assert.False(status.PathSuffix == "MakeDirTest" && status.Type == "Directory" && status.Permission == "770");
             }
+            Assert.True(result);
         }
     }
 }
