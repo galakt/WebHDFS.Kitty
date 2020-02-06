@@ -13,14 +13,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task UploadFileWithoutParams()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
-            foreach (var status in listStatus)
-            {
-                if (status.PathSuffix == "sample2" && status.Type == "FILE")
-                {
-                    await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
-                }
-            }
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
 
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"));
             var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
