@@ -57,7 +57,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task UploadFileWithReplication()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Replication: 3);
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Replication: 3, Overwrite: true);
             var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2");
             Assert.True(fileStat.Replication == 3);
         }

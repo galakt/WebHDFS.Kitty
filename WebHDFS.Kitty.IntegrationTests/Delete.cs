@@ -20,11 +20,7 @@ namespace WebHDFS.Kitty.IntegrationTests
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
 
             await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
-            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
-            foreach (var status in listStatus)
-            {
-                Assert.False(status.PathSuffix == "sample2" && status.Type == "FILE");
-            }
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2"));
         }
 
         [CheckConnStrSetupFact]
@@ -34,11 +30,8 @@ namespace WebHDFS.Kitty.IntegrationTests
             await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
 
             await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
-            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
-            foreach (var status in listStatus)
-            {
-                Assert.False(status.PathSuffix == "sample2" && status.Type == "FILE");
-            }
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2"));
+
         }
 
         [CheckConnStrSetupFact]
@@ -48,11 +41,7 @@ namespace WebHDFS.Kitty.IntegrationTests
             await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/DirForDelete/SampleFile", "770");
 
             await client.Delete($"{DataTestUtility.HdfsRootDir}/DirForDelete",Recursive: true);
-            var listStatus = await client.ListStatus($"{DataTestUtility.HdfsRootDir}");
-            foreach (var status in listStatus)
-            {
-                Assert.False(status.PathSuffix == "DirForDelete" && status.Type == "DIRECTORY");
-            }
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/DirForDelete"));
         }
     }
 }
