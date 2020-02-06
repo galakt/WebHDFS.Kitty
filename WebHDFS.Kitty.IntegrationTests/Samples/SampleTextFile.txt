@@ -1,1 +1,1 @@
-﻿SomeText
+﻿Some text

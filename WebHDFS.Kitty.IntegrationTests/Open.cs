@@ -17,6 +17,7 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task ReadFileStream()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
             var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams());
             using (StreamReader reader = new StreamReader(openResponse))
             {
@@ -43,7 +44,9 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task ReadWithLenght()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Length = 2 });
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample");
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Length = 5 });
             using (StreamReader reader = new StreamReader(openResponse))
             {
                 var openResult = reader.ReadToEnd();
@@ -55,7 +58,8 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task ReadWithOffset()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 2 });
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 5 });
             using (StreamReader reader = new StreamReader(openResponse))
             {
                 var openResult = reader.ReadToEnd();
@@ -67,7 +71,8 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task ReadWithOffsetWithLenght()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 2, Length = 2 });
+            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
+            var openResponse = await client.OpenStream($"{DataTestUtility.HdfsRootDir}/sample", new OpenParams() { Offset = 5, Length = 2 });
             using (StreamReader reader = new StreamReader(openResponse))
             {
                 var openResult = reader.ReadToEnd();

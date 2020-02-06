@@ -19,9 +19,10 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task CreateNewDirWithControl()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
+            await client.Delete($"{DataTestUtility.HdfsRootDir}/MakeDirTest", Recursive: true);
             var result = await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/MakeDirTest", "770");
             var dirStatus = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/MakeDirTest");
-            Assert.False(dirStatus.PathSuffix == "MakeDirTest" && dirStatus.Type == "Directory" && dirStatus.Permission == "770");
+            Assert.True(dirStatus.Type == "DIRECTORY" && dirStatus.Permission == "770");
             Assert.True(result);
         }
     }
