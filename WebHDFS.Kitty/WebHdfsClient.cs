@@ -163,6 +163,27 @@ namespace WebHDFS.Kitty
             }
         }
 
+        public async Task Append(string path, Stream fileStream, int? buffersize = null)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=APPEND";
+            if (buffersize != null)
+            {
+                requestUri = requestUri + "&buffersize=" + buffersize;
+            }
+            var initRequest = new HttpRequestMessage(HttpMethod.Post, requestUri);
+            initRequest.Content = new StreamContent(Stream.Null);
+            initRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            var initResponse = await _httpClient.SendAsync(initRequest);
+            if (initResponse.StatusCode == HttpStatusCode.TemporaryRedirect)
+            {
+                var uploadRequest = new HttpRequestMessage(HttpMethod.Post, initResponse.Headers.Location);
+                uploadRequest.Content = new StreamContent(fileStream);
+                uploadRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                var uploadResponse = await _httpClient.SendAsync(uploadRequest);
+                uploadResponse.EnsureSuccessStatusCode();
+            }
+        }
+
         public async Task UploadFile(string path,
             Stream fileStream,
             bool Overwrite = false,
