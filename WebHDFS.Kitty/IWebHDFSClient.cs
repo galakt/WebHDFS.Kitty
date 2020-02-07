@@ -33,5 +33,7 @@ namespace WebHDFS.Kitty
 
         Task<bool> SetReplicationFactor(string path, short replication);
 
+        Task SetPermission(string path, int permission);
+
     }
 }

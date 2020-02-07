@@ -157,6 +157,19 @@ namespace WebHDFS.Kitty
             return deserializedContent.Boolean;
         }
 
+        public async Task SetPermission(string path, int permission)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETPERMISSION&permission=" + permission;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+        }
+
         public async Task Delete(string path, bool Recursive = false)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=DELETE";
