@@ -31,5 +31,7 @@ namespace WebHDFS.Kitty
 
         Task<bool> Rename(string path, string destination);
 
+        Task<bool> SetReplicationFactor(string path, short replication);
+
     }
 }
