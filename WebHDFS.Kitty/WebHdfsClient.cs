@@ -184,6 +184,23 @@ namespace WebHDFS.Kitty
             }
         }
 
+        public async Task<bool> Rename(string path, string destination)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=RENAME&destination=" + destination;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            return deserializedContent.Boolean;
+        }
+
         public async Task UploadFile(string path,
             Stream fileStream,
             bool Overwrite = false,
