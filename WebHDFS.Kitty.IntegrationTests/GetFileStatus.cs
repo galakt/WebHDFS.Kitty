@@ -19,7 +19,7 @@ namespace WebHDFS.Kitty.IntegrationTests
             await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample", File.OpenRead("Samples/SampleTextFile.txt"), Permission: 770, Overwrite: true);
 
             var fileStat = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample");
-            Assert.True(fileStat.Length == 14);
+            Assert.True(fileStat.Length == 11);
             Assert.True(fileStat.Type == "FILE");
             Assert.True(fileStat.Permission == "770");
         }
