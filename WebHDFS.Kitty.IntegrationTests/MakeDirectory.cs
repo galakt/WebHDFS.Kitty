@@ -11,7 +11,9 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task CreateNewDir()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            var result = await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/MakeDirTest", "770");
+            var dirPath = $"{DataTestUtility.HdfsRootDir}/{nameof(CreateNewDir)}/MakeDirTest";
+
+            var result = await client.MakeDirectory(dirPath, "770");
             Assert.True(result);
         }
 
@@ -19,9 +21,11 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task CreateNewDirWithControl()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/MakeDirTest", Recursive: true);
-            var result = await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/MakeDirTest", "770");
-            var dirStatus = await client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/MakeDirTest");
+            var dirPath = $"{DataTestUtility.HdfsRootDir}/{nameof(CreateNewDirWithControl)}/MakeDirTest";
+            await client.Delete(dirPath, Recursive: true);
+
+            var result = await client.MakeDirectory(dirPath, "770");
+            var dirStatus = await client.GetFileStatus(dirPath);
             Assert.True(dirStatus.Type == "DIRECTORY" && dirStatus.Permission == "770");
             Assert.True(result);
         }

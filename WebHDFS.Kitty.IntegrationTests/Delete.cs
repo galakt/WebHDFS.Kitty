@@ -17,20 +17,22 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task Remove()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.UploadFile($"{DataTestUtility.HdfsRootDir}/sample2", File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
+            var filePath = $"{DataTestUtility.HdfsRootDir}/{nameof(Remove)}/sample2";
+            await client.UploadFile(filePath, File.OpenRead("Samples/SampleTextFile.txt"), Overwrite: true);
 
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
-            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2"));
+            await client.Delete(filePath);
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus(filePath));
         }
 
         [CheckConnStrSetupFact]
         public async Task RemoveNonexistentFile()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
+            var filePath = $"{DataTestUtility.HdfsRootDir}/{nameof(RemoveNonexistentFile)}/sample2";
+            await client.Delete(filePath);
 
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/sample2");
-            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/sample2"));
+            await client.Delete(filePath);
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus(filePath));
 
         }
 
@@ -38,10 +40,11 @@ namespace WebHDFS.Kitty.IntegrationTests
         public async Task RemoveDirectory()
         {
             client = new WebHdfsClient(DataTestUtility.HdfsConnStr);
-            await client.MakeDirectory($"{DataTestUtility.HdfsRootDir}/DirForDelete/SampleFile", "770");
+            var filePath = $"{DataTestUtility.HdfsRootDir}/{nameof(RemoveDirectory)}/";
+            await client.MakeDirectory(filePath, "770");
 
-            await client.Delete($"{DataTestUtility.HdfsRootDir}/DirForDelete",Recursive: true);
-            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus($"{DataTestUtility.HdfsRootDir}/DirForDelete"));
+            await client.Delete(filePath,Recursive: true);
+            await Assert.ThrowsAsync<System.InvalidOperationException>(() => client.GetFileStatus(filePath));
         }
     }
 }
