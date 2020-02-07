@@ -26,5 +26,8 @@ namespace WebHDFS.Kitty
         Task UploadFile(string path, Stream fileStream, bool Overwrite = false, int Permission = 755, short? Replication = null, long? BufferSize = null, long? BlockSize = null);
 
         Task Delete(string path, bool Recursive = false);
+
+        Task Append(string path, Stream fileStream, int? buffersize = null);
+
     }
 }
