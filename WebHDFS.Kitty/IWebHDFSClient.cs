@@ -23,6 +23,8 @@ namespace WebHDFS.Kitty
         
         Task<bool> MakeDirectory(string path, string permission);
 
-        Task UploadFile(string path, Stream fileStream);
+        Task UploadFile(string path, Stream fileStream, bool Overwrite = false, int Permission = 755, short? Replication = null, long? BufferSize = null, long? BlockSize = null);
+
+        Task Delete(string path, bool Recursive = false);
     }
 }
