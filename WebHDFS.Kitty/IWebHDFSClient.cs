@@ -35,5 +35,9 @@ namespace WebHDFS.Kitty
 
         Task SetPermission(string path, int permission);
 
+        Task<string> CreateSnapshot(string path, string name = null);
+
+        Task SetOwner(string path, string owner, string group = null);
+
     }
 }

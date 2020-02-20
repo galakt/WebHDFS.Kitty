@@ -157,6 +157,43 @@ namespace WebHDFS.Kitty
             return deserializedContent.Boolean;
         }
 
+        public async Task<string> CreateSnapshot(string path, string name = null)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATESNAPSHOT";
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                requestUri = requestUri + "&snapshotname=" + name;
+            }
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            return deserializedContent.ToString();
+        }
+
+        public async Task SetOwner(string path, string owner,string group = null)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETOWNER&owner=" + owner;
+            if(!string.IsNullOrWhiteSpace(group))
+            {
+                requestUri = requestUri + "&group=" + group;
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+        }
+
         public async Task SetPermission(string path, int permission)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETPERMISSION&permission=" + permission;
