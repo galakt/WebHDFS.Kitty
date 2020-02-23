@@ -29,5 +29,11 @@ namespace WebHDFS.Kitty
 
         Task Append(string path, Stream fileStream, int? buffersize = null);
 
+        Task<bool> Rename(string path, string destination);
+
+        Task<bool> SetReplicationFactor(string path, short replication);
+
+        Task SetPermission(string path, int permission);
+
     }
 }

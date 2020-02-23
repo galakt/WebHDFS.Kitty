@@ -140,6 +140,36 @@ namespace WebHDFS.Kitty
             return deserializedContent.Boolean;
         }
 
+        public async Task<bool> SetReplicationFactor(string path, short replication)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETREPLICATION&replication=" + replication;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            return deserializedContent.Boolean;
+        }
+
+        public async Task SetPermission(string path, int permission)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETPERMISSION&permission=" + permission;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+        }
+
         public async Task Delete(string path, bool Recursive = false)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=DELETE";
@@ -182,6 +212,23 @@ namespace WebHDFS.Kitty
                 var uploadResponse = await _httpClient.SendAsync(uploadRequest);
                 uploadResponse.EnsureSuccessStatusCode();
             }
+        }
+
+        public async Task<bool> Rename(string path, string destination)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=RENAME&destination=" + destination;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            return deserializedContent.Boolean;
         }
 
         public async Task UploadFile(string path,
