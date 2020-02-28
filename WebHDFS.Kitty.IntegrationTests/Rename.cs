@@ -19,13 +19,8 @@ namespace WebHDFS.Kitty.IntegrationTests
             await client.Delete(dirPath, Recursive:true);
             await client.UploadFile($"{dirPath}/sample", File.OpenRead("Samples/SampleTextFile.txt"));
 
-            var fileStat = await client.GetFileStatus($"{dirPath}/sample");
-            if (fileStat.Type == "FILE")
-            {
-                var result = await client.Rename($"{dirPath}/sample", $"{dirPath}/notsample");
-                Assert.True(result);
-            }
-            else { Assert.True(false); }
+            var result = await client.Rename($"{dirPath}/sample", $"{dirPath}/notsample");
+            Assert.True(result);
         }
     }
 }

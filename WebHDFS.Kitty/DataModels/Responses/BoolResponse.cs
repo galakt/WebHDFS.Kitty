@@ -1,10 +1,11 @@
 ﻿namespace WebHDFS.Kitty.DataModels.Responses
 {
-   public sealed class RenameResponse : BoolResponse
+    public class BoolResponse
     {
-        public RenameResponse(bool boolean) : base(boolean)
+        public BoolResponse(bool boolean)
         {
             Boolean = boolean;
         }
+        public bool Boolean { get; set; }
     }
 }

@@ -210,11 +210,11 @@ namespace WebHDFS.Kitty
         public async Task SetTimes(string path, int modificationtime = -1, int acesstime = -1)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETTIMES";
-            if(modificationtime != -1)
+            if (modificationtime != -1)
             {
                 requestUri = requestUri + "&modificationtime=" + modificationtime.ToString();
             }
-            if(acesstime != -1)
+            if (acesstime != -1)
             {
                 requestUri = requestUri + "&accesstime=" + acesstime.ToString();
             }

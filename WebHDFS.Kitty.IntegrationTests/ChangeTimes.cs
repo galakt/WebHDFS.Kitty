@@ -25,3 +25,4 @@ namespace WebHDFS.Kitty.IntegrationTests
         }
     }
 }
+
