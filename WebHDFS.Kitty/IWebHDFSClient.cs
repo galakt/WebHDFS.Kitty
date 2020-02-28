@@ -39,5 +39,7 @@ namespace WebHDFS.Kitty
 
         Task SetOwner(string path, string owner, string group = null);
 
+        Task SetTimes(string path, int modificationtime = -1, int acesstime = -1);
+
     }
 }
