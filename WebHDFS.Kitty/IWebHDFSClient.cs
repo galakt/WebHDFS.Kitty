@@ -41,5 +41,15 @@ namespace WebHDFS.Kitty
 
         Task SetTimes(string path, int modificationtime = -1, int acesstime = -1);
 
+        Task<string> GetDelegationToken(string path, string user, string service, string kind);
+
+        Task<string> GetDelegationTokens(string path, string user);
+
+        Task<bool> CheckAccess(string path, string fsaction);
+
+        Task<long> RenewDelegstionToken(string path, string token);
+
+        //Task CreatesSymLink(string path, string destination, bool createParent = false);
+
     }
 }
