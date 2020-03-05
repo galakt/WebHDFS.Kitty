@@ -45,7 +45,7 @@ namespace WebHDFS.Kitty
 
         Task<string> GetDelegationTokens(string path, string user);
 
-        Task<bool> CheckAccess(string path, string fsaction);
+        //Task<bool> CheckAccess(string path, string fsaction);
 
         Task<long> RenewDelegstionToken(string path, string token);
 
