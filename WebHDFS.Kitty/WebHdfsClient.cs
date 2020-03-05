@@ -153,7 +153,7 @@ namespace WebHDFS.Kitty
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            var deserializedContent = JsonConvert.DeserializeObject<SetReplicationResponse>(content);
             return deserializedContent.Boolean;
         }
 
@@ -173,7 +173,7 @@ namespace WebHDFS.Kitty
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            var deserializedContent = JsonConvert.DeserializeObject<CreateSnapshotResponse>(content);
             return deserializedContent.ToString();
         }
 
@@ -197,6 +197,27 @@ namespace WebHDFS.Kitty
         public async Task SetPermission(string path, int permission)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETPERMISSION&permission=" + permission;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+        }
+
+        public async Task SetTimes(string path, int modificationtime = -1, int acesstime = -1)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=SETTIMES";
+            if (modificationtime != -1)
+            {
+                requestUri = requestUri + "&modificationtime=" + modificationtime.ToString();
+            }
+            if (acesstime != -1)
+            {
+                requestUri = requestUri + "&accesstime=" + acesstime.ToString();
+            }
 
             var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
             var response = await _httpClient.SendAsync(request);
@@ -264,7 +285,7 @@ namespace WebHDFS.Kitty
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var deserializedContent = JsonConvert.DeserializeObject<MakeDirectoryResponse>(content);
+            var deserializedContent = JsonConvert.DeserializeObject<RenameResponse>(content);
             return deserializedContent.Boolean;
         }
 
