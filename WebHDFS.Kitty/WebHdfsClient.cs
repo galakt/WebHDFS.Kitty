@@ -118,7 +118,94 @@ namespace WebHDFS.Kitty
         {
             return (await GetRequest<HomeDirectoryResponse>($"/webhdfs/v1/?op=GETHOMEDIRECTORY")).Path;
         }
-        
+
+        public async Task<string> GetDelegationToken(string path, string user, string service, string kind)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=GETDELEGATIONTOKEN&renewer=";
+            requestUri = requestUri + user + "&service=" + service + "&kind=" + kind;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<TokenResponse>(content);
+            return deserializedContent.ToString();
+        }
+
+        public async Task<string> GetDelegationTokens(string path, string user)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=GETDELEGATIONTOKEN&renewer=";
+            requestUri = requestUri + user;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<TokensResponse>(content);
+            return deserializedContent.ToString();
+        }
+
+        public async Task CheckAccess(string path, string fsaction)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=CHECKACCESS&fsaction=" + fsaction;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+        }
+
+        public async Task<long> RenewDelegstionToken(string path, string token)
+        {
+            var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=RENEWDELEGATIONTOKEN&token=" + token;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var notSuccessContent = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var deserializedContent = JsonConvert.DeserializeObject<RenewDelegationTokenResponse>(content);
+            return deserializedContent.Long;
+        }
+
+        //public async Task CreatesSymLink(string path, string destination, bool createParent = false)
+        //{
+        //    var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=CREATESYMLINK2&destination=" + destination;
+        //    if(createParent)
+        //    {
+        //        requestUri = requestUri + "&createParent=true";
+        //    }
+        //    //else
+        //    //{
+        //    //    requestUri = requestUri + "&createParent=false";
+        //    //}
+
+        //    var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
+        //    var response = await _httpClient.SendAsync(request);
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        var notSuccessContent = await response.Content.ReadAsStringAsync();
+        //        throw new InvalidOperationException($"Not success status code. Code={response.StatusCode}. Content={notSuccessContent}");
+        //    }
+        //}
+
         public async Task<bool> MakeDirectory(string path, string permission = null)
         {
             var requestUri = $"/webhdfs/v1/{path.TrimStart('/')}?op=MKDIRS";
