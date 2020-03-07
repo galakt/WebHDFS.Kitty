@@ -51,5 +51,19 @@ namespace WebHDFS.Kitty
 
         //Task CreatesSymLink(string path, string destination, bool createParent = false);
 
+        Task<XAttr[]> GetXAttrs(string path, string xAttrName, string encoding);
+
+        Task<XAttr[]> GetAllXAttrs(string path, string encoding);
+
+        Task SetXAttr(string path, string xattrname, string value, string flag);
+
+        Task RemoveXAttr(string path, string xattrname);
+
+        Task<ListXAttrResponse> ListXAttrs(string path);
+
+        Task<XAttr[]> GetMultipleXAttrs(string path, string xAttrName1, string xAttrName2, string encoding);
+
+        Task Concat(string path, string sources);
+
     }
 }
