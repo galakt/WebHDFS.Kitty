@@ -19,13 +19,13 @@ Yet another WebHDFS client on .Net Standard
 | CHECKACCESS | `not implemented`
 |    |
 | **HTTP PUT**
-| CREATE | `not implemented`
-| MKDIRS | `not implemented`
+| CREATE | `implemented`
+| MKDIRS | `implemented`
 | CREATESYMLINK | `not implemented`
-| RENAME | `not implemented`
-| SETREPLICATION | `not implemented`
+| RENAME | `implemented`
+| SETREPLICATION | `implemented`
 | SETOWNER | `not implemented`
-| SETPERMISSION | `not implemented`
+| SETPERMISSION | `implemented`
 | SETTIMES | `not implemented`
 | RENEWDELEGATIONTOKEN | `not implemented`
 | CANCELDELEGATIONTOKEN | `not implemented`
@@ -35,9 +35,9 @@ Yet another WebHDFS client on .Net Standard
 | REMOVEXATTR | `not implemented`
 |    |
 | **HTTP POST**
-| APPEND | `not implemented`
+| APPEND | `implemented`
 | CONCAT | `not implemented`
 |    |
 | **HTTP DELETE**
-| DELETE | `not implemented`
+| DELETE | `implemented`
 | DELETESNAPSHOT | `not implemented`
